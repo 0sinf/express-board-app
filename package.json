@@ -1,0 +1,19 @@
+{
+  "name": "board",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/younGsse/express-board-app.git",
+  "author": "sinf <wjdtp93@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "jest": "^27.4.5"
+  },
+  "type": "module"
+}
