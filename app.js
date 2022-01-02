@@ -4,7 +4,11 @@ import mongoose from "mongoose";
 import pino from "pino";
 
 dotenv.config();
-const logger = pino();
+const logger = pino({
+  transport: {
+    target: "pino-pretty",
+  },
+});
 
 const port = parseInt(process.env.PORT) || 3000;
 const mongoUri = process.env.MONGO_URI;
