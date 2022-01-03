@@ -21,6 +21,11 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+UserSchema.statics.createUser = async function (email, password, name) {
+  const user = await User.create({ email, password, name });
+  return user.id;
+};
+
 const User = mongoose.model("User", UserSchema);
 
-export default User;
+export { User };

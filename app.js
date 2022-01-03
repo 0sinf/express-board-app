@@ -15,16 +15,27 @@ const logger = pino({
 const port = parseInt(process.env.PORT) || 3000;
 const mongoUri = process.env.MONGO_URI;
 
-mongoose.connect(mongoUri + "/board", () => {
-  logger.info("DB connected");
-});
+if (process.env.NODE_ENV !== "test") {
+  mongoose.connect(mongoUri + "/board", () => {
+    logger.info("DB connected");
+  });
+} else {
+  mongoose.connect(mongoUri + "/boardTest", () => {
+    logger.info("DB connected");
+  });
+}
 
 const app = express();
 
-app.use("/users", userRouter);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.listen(port, () => {
-  logger.info(`Start server at ${port}`);
-});
+app.use("/api/users", userRouter);
+
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    logger.info(`Start server at ${port}`);
+  });
+}
 
 export default app;
