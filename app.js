@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import pino from "pino";
 
+import userRouter from "./routes/user.js";
+
 dotenv.config();
 const logger = pino({
   transport: {
@@ -19,10 +21,10 @@ mongoose.connect(mongoUri + "/board", () => {
 
 const app = express();
 
-app.use("/", (req, res) => {
-  res.status(200).send("good");
-});
+app.use("/users", userRouter);
 
 app.listen(port, () => {
   logger.info(`Start server at ${port}`);
 });
+
+export default app;
