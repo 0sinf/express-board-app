@@ -26,6 +26,11 @@ UserSchema.statics.createUser = async function (email, password, name) {
   return user.id;
 };
 
+UserSchema.statics.findUserById = async function (email) {
+  const user = await User.findOne({ email });
+  return user;
+};
+
 const User = mongoose.model("User", UserSchema);
 
 export { User };

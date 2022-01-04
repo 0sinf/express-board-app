@@ -7,4 +7,15 @@ async function createUser(email, password, name) {
   return user.id;
 }
 
-export { createUser };
+async function checkUser(email, password) {
+  const user = await User.findUserById(email);
+  if (!user) {
+    return false;
+  }
+  if (!bcrypt.compareSync(password, user.password)) {
+    return false;
+  }
+  return true;
+}
+
+export { createUser, checkUser };
