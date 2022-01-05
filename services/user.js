@@ -12,7 +12,6 @@ async function checkUser(email, password) {
   if (!user) {
     return false;
   }
-  console.log(!user.verifyPassword(password));
   if (!user.verifyPassword(password)) {
     return false;
   }

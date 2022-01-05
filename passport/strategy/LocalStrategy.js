@@ -1,0 +1,19 @@
+import { Strategy as LocalStratey } from "passport-local";
+import { User } from "../../models/User";
+
+const opts = {
+  usernameField: "email",
+  passwordField: "password",
+};
+
+export default new LocalStratey(opts, async function (email, password, done) {
+  const user = await User.findUserById(email);
+  if (!user) {
+    return done(null, false);
+  }
+  if (!user.verifyPassword(password)) {
+    return done(null, false);
+  }
+
+  return done(null, user);
+});

@@ -49,9 +49,9 @@ describe("유저 로그인 테스트", () => {
       password: "password",
     });
 
-    expect(res.statusCode).toEqual(400);
-    expect(res.body.isOk).toEqual(false);
-    expect(res.body.msg).toEqual("존재하지 않거나 비밀번호가 틀렸습니다.");
+    console.log(res.body);
+
+    expect(res.statusCode).toEqual(401);
   });
 
   it("유저 로그인 실패 패스워드", async () => {
@@ -60,9 +60,7 @@ describe("유저 로그인 테스트", () => {
       password: "passworngword",
     });
 
-    expect(res.statusCode).toEqual(400);
-    expect(res.body.isOk).toEqual(false);
-    expect(res.body.msg).toEqual("존재하지 않거나 비밀번호가 틀렸습니다.");
+    expect(res.statusCode).toEqual(401);
   });
 
   afterAll(async () => {

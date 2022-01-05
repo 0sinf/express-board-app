@@ -3,8 +3,10 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import pino from "pino";
 
+import passport from "./passport/index.js";
 import userRouter from "./routes/user.js";
 
+passport();
 dotenv.config();
 const logger = pino({
   transport: {
