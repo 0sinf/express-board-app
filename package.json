@@ -19,6 +19,7 @@
     "mongoose": "^6.1.4",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
     "pino": "^7.6.2",
     "pino-pretty": "^7.3.0"
   },

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -29,6 +30,10 @@ UserSchema.statics.createUser = async function (email, password, name) {
 UserSchema.statics.findUserById = async function (email) {
   const user = await User.findOne({ email });
   return user;
+};
+
+UserSchema.methods.verifyPassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
 };
 
 const User = mongoose.model("User", UserSchema);

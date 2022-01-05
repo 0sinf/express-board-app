@@ -12,7 +12,8 @@ async function checkUser(email, password) {
   if (!user) {
     return false;
   }
-  if (!bcrypt.compareSync(password, user.password)) {
+  console.log(!user.verifyPassword(password));
+  if (!user.verifyPassword(password)) {
     return false;
   }
   return true;
