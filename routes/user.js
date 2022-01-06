@@ -1,6 +1,7 @@
 import express from "express";
 import passport from "passport";
 import { createUser } from "../services/user.js";
+import loginRequried from "./middlewares/login-requried.js";
 
 const route = express.Router();
 
@@ -16,10 +17,14 @@ route.post(
     session: false,
   }),
   async (req, res) => {
-    console.log(req.user);
-    res.status(200).json({ isOk: true });
+    res.status(200).json({ isOk: true, token: req.user });
   }
 );
+
+route.get("/", loginRequried, async (req, res) => {
+  const { email, name } = req.user;
+  res.status(200).json({ email, name });
+});
 
 route.post("/passport");
 

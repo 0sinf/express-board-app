@@ -16,7 +16,6 @@ export async function createToken(user) {
   return token;
 }
 
-export async function verifyToken(token) {
-  const decoded = verify(token, secretKey);
-  return decoded;
+export async function verifyToken(token, cb) {
+  return verify(token, secretKey, cb);
 }

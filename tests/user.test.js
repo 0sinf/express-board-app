@@ -69,3 +69,49 @@ describe("유저 로그인 테스트", () => {
     });
   });
 });
+
+describe("유저 로그인 required 테스트", () => {
+  let token = "Bearer ";
+
+  beforeAll(async () => {
+    await User.create({
+      email: "email@example.com",
+      password: bcrypt.hashSync("password", 10),
+      name: "myName",
+    });
+  });
+
+  it("유저 로그인 성공", async () => {
+    const res = await request(server).post("/api/users/login").send({
+      email: "email@example.com",
+      password: "password",
+    });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.isOk).toEqual(true);
+
+    token += res.body.token;
+  });
+
+  it("유저 로그인 필요 테스트 성공", async () => {
+    const res = await request(server)
+      .get("/api/users")
+      .set("authorization", token)
+      .send();
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual({ email: "email@example.com", name: "myName" });
+  });
+
+  // it("유저 로그인 필요 테스트 실패", async () => {
+  //   const res = await request(server).get("/api/users").send();
+  // });
+
+  afterAll(async () => {
+    await User.deleteOne({
+      email: "email@example.com",
+      password: "password",
+      name: "myName",
+    });
+  });
+});
