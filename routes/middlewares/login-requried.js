@@ -16,6 +16,7 @@ export default (req, res, next) => {
       next("로그인이 필요합니다.");
       return;
     }
+    // 만료된 경우 로그인 요구
     req.user = await User.findById(decoded.data);
     next();
   });
