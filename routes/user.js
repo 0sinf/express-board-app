@@ -1,6 +1,6 @@
 import express from "express";
 import passport from "passport";
-import { createUser, checkUser } from "../services/user.js";
+import { createUser } from "../services/user.js";
 
 const route = express.Router();
 
