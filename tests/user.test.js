@@ -49,8 +49,6 @@ describe("유저 로그인 테스트", () => {
       password: "password",
     });
 
-    console.log(res.body);
-
     expect(res.statusCode).toEqual(401);
   });
 

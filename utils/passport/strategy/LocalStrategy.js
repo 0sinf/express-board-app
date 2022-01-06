@@ -1,5 +1,6 @@
 import { Strategy as LocalStratey } from "passport-local";
 import { User } from "../../models/User";
+import { createToken } from "../utils/jwt";
 
 const opts = {
   usernameField: "email",
@@ -14,6 +15,6 @@ export default new LocalStratey(opts, async function (email, password, done) {
   if (!user.verifyPassword(password)) {
     return done(null, false);
   }
-
-  return done(null, user);
+  const token = await createToken(user);
+  return done(null, token);
 });
