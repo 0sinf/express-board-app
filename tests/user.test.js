@@ -1,8 +1,12 @@
 import "regenerator-runtime";
 import request from "supertest";
 import bcrypt from "bcrypt";
+import { sign } from "jsonwebtoken";
+import dotenv from "dotenv";
 import { User } from "../models/User.js";
 import server from "../app.js";
+
+dotenv.config();
 
 describe("유저 생성 테스트", () => {
   afterAll(async () => {
@@ -72,9 +76,9 @@ describe("유저 로그인 테스트", () => {
 
 describe("유저 로그인 required 테스트", () => {
   let token = "Bearer ";
-
+  let user;
   beforeAll(async () => {
-    await User.create({
+    user = await User.create({
       email: "email@example.com",
       password: bcrypt.hashSync("password", 10),
       name: "myName",
@@ -106,6 +110,24 @@ describe("유저 로그인 required 테스트", () => {
   // it("유저 로그인 필요 테스트 실패", async () => {
   //   const res = await request(server).get("/api/users").send();
   // });
+  it("만료된 토큰으로 로그인 필요 접근", async () => {
+    const secretKey = process.env.JWT_SECRET;
+    const expToken = sign(
+      {
+        exp: Math.floor(Date.now() / 1000) - 60 * 60,
+        data: user.id,
+      },
+      secretKey
+    );
+    const res = await request(server)
+      .get("/api/users")
+      .set("authorization", expToken)
+      .send();
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
+    expect(res.body.msg).toEqual("로그인이 필요합니다.");
+  });
 
   afterAll(async () => {
     await User.deleteOne({
