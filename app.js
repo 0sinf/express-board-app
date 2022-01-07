@@ -40,4 +40,12 @@ if (process.env.NODE_ENV !== "test") {
   });
 }
 
+app.use((req, res, next) => {
+  next("404 Not Found");
+});
+
+app.use((err, req, res, next) => {
+  res.status(403).json({ isOk: false, msg: err });
+});
+
 export default app;
