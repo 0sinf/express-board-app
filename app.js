@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import pino from "pino";
 
 import passport from "./utils/passport/index.js";
-import userRouter from "./routes/user.js";
+import route from "./routes/index";
 
 passport();
 dotenv.config();
@@ -32,7 +32,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/users", userRouter);
+app.use("/api", route());
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, () => {
