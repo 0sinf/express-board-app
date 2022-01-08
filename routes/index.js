@@ -6,6 +6,6 @@ const app = Router();
 
 export default () => {
   user(app);
-  // post(app);
+  post(app);
   return app;
 };

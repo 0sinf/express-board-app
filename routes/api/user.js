@@ -6,8 +6,6 @@ import loginRequried from "../middlewares/login-requried.js";
 export default (app) => {
   const route = express.Router();
 
-  app.use("/users", route);
-
   route.post("/signup", async (req, res) => {
     const { email, password, name } = req.body;
     const userId = await createUser(email, password, name);
@@ -29,5 +27,5 @@ export default (app) => {
     res.status(200).json({ email, name });
   });
 
-  route.post("/passport");
+  app.use("/users", route);
 };
