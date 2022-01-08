@@ -23,6 +23,14 @@ const PostSchema = new mongoose.Schema(
   }
 );
 
+PostSchema.statics.createPost = async (title, contents, author) => {
+  return await Post.create({
+    title,
+    contents,
+    author,
+  });
+};
+
 const Post = mongoose.model("Post", PostSchema);
 
 export { Post };
