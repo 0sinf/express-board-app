@@ -6,13 +6,17 @@ export async function createPost(title, contents, authorId) {
 }
 
 export async function findPostById(postId) {
-  const post = await Post.findPostById(postId);
-  const { title, contents, author, createdAt } = post;
-  return {
-    postId,
-    title,
-    contents,
-    createdAt,
-    author: author.name,
-  };
+  try {
+    const post = await Post.findPostById(postId);
+    const { title, contents, author, createdAt } = post;
+    return {
+      postId,
+      title,
+      contents,
+      createdAt,
+      author: author.name,
+    };
+  } catch (e) {
+    throw new Error("존재하지 않는 글입니다.");
+  }
 }

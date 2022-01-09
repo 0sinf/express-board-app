@@ -57,6 +57,16 @@ describe("포스트 테스트", () => {
     expect(res.body.author).toEqual("young");
   });
 
+  it("없는 포스트 찾기", async () => {
+    const res = await request(server)
+      .get("/api/posts/" + "notexistspost")
+      .send();
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
+    expect(res.body.msg).toEqual("존재하지 않는 글입니다.");
+  });
+
   afterAll(async () => {
     await User.deleteOne({
       email,

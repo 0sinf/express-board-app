@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createPost, findPostById } from "../../services/post";
 import loginRequried from "../middlewares/login-requried";
+import asyncHandler from "../middlewares/async-handler";
 
 export default (app) => {
   const route = Router();
@@ -12,11 +13,14 @@ export default (app) => {
     res.status(200).json({ isOk: true, postId });
   });
 
-  route.get("/:postId", async (req, res) => {
-    const { postId } = req.params;
-    const post = await findPostById(postId);
-    res.status(201).json(post);
-  });
+  route.get(
+    "/:postId",
+    asyncHandler(async (req, res) => {
+      const { postId } = req.params;
+      const post = await findPostById(postId);
+      res.status(201).json(post);
+    })
+  );
 
   app.use("/posts", route);
 };
