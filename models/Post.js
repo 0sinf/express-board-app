@@ -31,6 +31,10 @@ PostSchema.statics.createPost = async (title, contents, author) => {
   });
 };
 
+PostSchema.statics.findPostById = async (postId) => {
+  return await Post.findById(postId).populate("author");
+};
+
 const Post = mongoose.model("Post", PostSchema);
 
 export { Post };
