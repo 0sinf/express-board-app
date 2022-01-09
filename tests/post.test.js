@@ -14,6 +14,7 @@ describe("포스트 테스트", () => {
   const password = bcrypt.hashSync("password", 10);
   const name = "young";
   const secretKey = process.env.JWT_SECRET;
+  let postId;
 
   beforeAll(async () => {
     const userId = await User.createUser(email, password, name);
@@ -40,6 +41,19 @@ describe("포스트 테스트", () => {
     expect(Object.keys(res.body)).toEqual(
       expect.arrayContaining(["isOk", "postId"])
     );
+    postId = res.body.postId;
+  });
+
+  it("생성된 포스트 get", async () => {
+    const res = await request(server)
+      .get("/api/posts/" + postId)
+      .send();
+
+    expect(res.statusCode).toEqual(201);
+    expect(Object.keys(res.body)).toEqual(
+      expect.arrayContaining(["title", "contents", "author"])
+    );
+    expect(res.body.title).toEqual("title");
   });
 
   afterAll(async () => {
