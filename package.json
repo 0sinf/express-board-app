@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "jest": "^27.4.5",
+    "nodemon": "^2.0.15",
     "regenerator-runtime": "^0.13.9",
     "supertest": "^6.1.6"
   },
