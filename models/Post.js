@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
 const PostSchema = new mongoose.Schema(
   {
@@ -13,7 +13,7 @@ const PostSchema = new mongoose.Schema(
       maxlength: 200,
     },
     author: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },

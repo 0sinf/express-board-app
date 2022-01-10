@@ -1,4 +1,4 @@
-import { Post } from "../models/Post";
+import { Post } from "../models/Post.js";
 
 export async function createPost(title, contents, authorId) {
   const post = await Post.createPost(title, contents, authorId);

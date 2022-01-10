@@ -3,7 +3,7 @@ import request from "supertest";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import server from "../app.js";
-import { User } from "../models/User";
+import { User } from "../models/User.js";
 import { sign } from "jsonwebtoken";
 
 dotenv.config();

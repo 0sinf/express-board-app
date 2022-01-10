@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { createPost, findPostById } from "../../services/post";
-import loginRequried from "../middlewares/login-requried";
-import asyncHandler from "../middlewares/async-handler";
+import { createPost, findPostById } from "../../services/post.js";
+import loginRequried from "../middlewares/login-requried.js";
+import asyncHandler from "../middlewares/async-handler.js";
 
 export default (app) => {
   const route = Router();

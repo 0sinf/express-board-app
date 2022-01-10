@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import pino from "pino";
 
 import passport from "./utils/passport/index.js";
-import route from "./routes/index";
+import route from "./routes/index.js";
 
 passport();
 dotenv.config();

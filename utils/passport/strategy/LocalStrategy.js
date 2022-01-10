@@ -1,7 +1,7 @@
 import { Strategy as LocalStratey } from "passport-local";
 
-import { User } from "../../../models/User";
-import { createToken } from "../../jwt";
+import { User } from "../../../models/User.js";
+import { createToken } from "../../jwt.js";
 
 const opts = {
   usernameField: "email",
