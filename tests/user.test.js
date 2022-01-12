@@ -139,6 +139,7 @@ describe("유저 로그인 required 테스트", () => {
 
     await mongoose
       .createConnection(process.env.MONGO_URI + "/boardTest")
-      .dropCollection("users");
+      .collection("users")
+      .deleteMany({});
   });
 });

@@ -84,6 +84,7 @@ describe("포스트 테스트", () => {
 
     await mongoose
       .createConnection(process.env.MONGO_URI + "/boardTest")
-      .dropCollection("posts");
+      .collection("posts")
+      .deleteMany({});
   });
 });
