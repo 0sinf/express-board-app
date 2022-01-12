@@ -23,7 +23,6 @@ export async function findPostById(postId) {
 
 export async function findAllPosts() {
   const posts = await Post.findAll();
-  console.log(posts);
   return posts.map(({ _id, title, contents, author, createdAt, updatedAt }) => {
     return {
       postId: _id,
