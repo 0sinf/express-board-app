@@ -5,6 +5,7 @@ import { sign } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { User } from "../models/User.js";
 import server from "../app.js";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -135,5 +136,9 @@ describe("유저 로그인 required 테스트", () => {
       password: "password",
       name: "myName",
     });
+
+    await mongoose
+      .createConnection(process.env.MONGO_URI + "/boardTest")
+      .dropCollection("users");
   });
 });

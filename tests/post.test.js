@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import server from "../app.js";
 import { User } from "../models/User.js";
 import { sign } from "jsonwebtoken";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -80,5 +81,9 @@ describe("포스트 테스트", () => {
       password,
       name,
     });
+
+    await mongoose
+      .createConnection(process.env.MONGO_URI + "/boardTest")
+      .dropCollection("posts");
   });
 });
