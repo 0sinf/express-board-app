@@ -35,6 +35,10 @@ PostSchema.statics.findPostById = async (postId) => {
   return await Post.findById(postId).populate("author");
 };
 
+PostSchema.statics.findAll = async () => {
+  return await Post.find().populate("author");
+};
+
 const Post = mongoose.model("Post", PostSchema);
 
 export { Post };

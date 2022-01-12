@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createPost, findPostById } from "../../services/post.js";
+import { createPost, findPostById, findAllPosts } from "../../services/post.js";
 import loginRequried from "../middlewares/login-requried.js";
 import asyncHandler from "../middlewares/async-handler.js";
 
@@ -19,6 +19,14 @@ export default (app) => {
       const { postId } = req.params;
       const post = await findPostById(postId);
       res.status(201).json(post);
+    })
+  );
+
+  route.get(
+    "/",
+    asyncHandler(async (req, res) => {
+      const posts = await findAllPosts();
+      res.status(200).json({ posts });
     })
   );
 

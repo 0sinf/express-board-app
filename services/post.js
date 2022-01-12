@@ -20,3 +20,17 @@ export async function findPostById(postId) {
     throw new Error("존재하지 않는 글입니다.");
   }
 }
+
+export async function findAllPosts() {
+  const posts = await Post.findAll();
+  console.log(posts);
+  return posts.map(({ _id, title, contents, author, createdAt, updatedAt }) => {
+    return {
+      postId: _id,
+      title,
+      contents,
+      author: author.name,
+      createdAt,
+    };
+  });
+}
