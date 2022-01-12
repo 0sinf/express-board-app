@@ -57,6 +57,13 @@ describe("포스트 테스트", () => {
     expect(res.body.author).toEqual("young");
   });
 
+  it("포스트 리스트 호출", async () => {
+    const res = await request(server).get("/api/posts").send();
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.posts.length).toBeGreaterThanOrEqual(1);
+  });
+
   it("없는 포스트 찾기", async () => {
     const res = await request(server)
       .get("/api/posts/" + "notexistspost")
