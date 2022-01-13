@@ -64,8 +64,8 @@ describe("포스트 테스트", () => {
       .send({ title: "updatedTitle", contents: "updatedContents" });
 
     expect(res.statusCode).toEqual(200);
-    expect(res.title).toEqual("updatedTitle");
-    expect(res.contents).toEqual("updatedContents");
+    expect(res.body.title).toEqual("updatedTitle");
+    expect(res.body.contents).toEqual("updatedContents");
   });
 
   it("없는 포스트 찾기", async () => {
