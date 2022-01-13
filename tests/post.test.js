@@ -58,11 +58,14 @@ describe("포스트 테스트", () => {
     expect(res.body.author).toEqual("young");
   });
 
-  it("포스트 리스트 호출", async () => {
-    const res = await request(server).get("/api/posts").send();
+  it("포스트 수정하기", async () => {
+    const res = await request(server)
+      .put("/api/posts/" + postId)
+      .send({ title: "updatedTitle", contents: "updatedContents" });
 
     expect(res.statusCode).toEqual(200);
-    expect(res.body.posts.length).toBeGreaterThanOrEqual(1);
+    expect(res.title).toEqual("updatedTitle");
+    expect(res.contents).toEqual("updatedContents");
   });
 
   it("없는 포스트 찾기", async () => {
@@ -73,6 +76,13 @@ describe("포스트 테스트", () => {
     expect(res.statusCode).toEqual(403);
     expect(res.body.isOk).toEqual(false);
     expect(res.body.msg).toEqual("존재하지 않는 글입니다.");
+  });
+
+  it("포스트 리스트 호출", async () => {
+    const res = await request(server).get("/api/posts").send();
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.posts.length).toBeGreaterThanOrEqual(1);
   });
 
   afterAll(async () => {
