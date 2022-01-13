@@ -33,3 +33,15 @@ export async function findAllPosts() {
     };
   });
 }
+
+export async function updatePost(id, prevTitle, prevContents) {
+  const post = await Post.updatePost(id, prevTitle, prevContents);
+  const { title, contents, author, updatedAt } = post;
+  return {
+    id,
+    title,
+    contents,
+    author: author.name,
+    updatedAt,
+  };
+}
