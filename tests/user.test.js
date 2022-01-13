@@ -65,14 +65,6 @@ describe("유저 로그인 테스트", () => {
 
     expect(res.statusCode).toEqual(401);
   });
-
-  afterAll(async () => {
-    await User.deleteOne({
-      email: "email@example.com",
-      password: "password",
-      name: "myName",
-    });
-  });
 });
 
 describe("유저 로그인 required 테스트", () => {
@@ -131,12 +123,6 @@ describe("유저 로그인 required 테스트", () => {
   });
 
   afterAll(async () => {
-    await User.deleteOne({
-      email: "email@example.com",
-      password: "password",
-      name: "myName",
-    });
-
     await mongoose
       .createConnection(process.env.MONGO_URI + "/boardTest")
       .collection("users")
