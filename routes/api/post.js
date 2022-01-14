@@ -12,12 +12,16 @@ import asyncHandler from "../middlewares/async-handler.js";
 export default (app) => {
   const route = Router();
 
-  route.post("/", loginRequried, async (req, res) => {
-    const userId = req.user.id;
-    const { title, contents } = req.body;
-    const postId = await createPost(title, contents, userId);
-    res.status(200).json({ isOk: true, postId });
-  });
+  route.post(
+    "/",
+    loginRequried,
+    asyncHandler(async (req, res) => {
+      const userId = req.user.id;
+      const { title, contents } = req.body;
+      const postId = await createPost(title, contents, userId);
+      res.status(200).json({ isOk: true, postId });
+    })
+  );
 
   route.get(
     "/:postId",
