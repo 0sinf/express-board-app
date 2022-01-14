@@ -23,7 +23,7 @@ export async function findPostById(postId) {
 
 export async function findAllPosts() {
   const posts = await Post.findAll();
-  return posts.map(({ _id, title, contents, author, createdAt, updatedAt }) => {
+  return posts.map(({ _id, title, contents, author, createdAt }) => {
     return {
       postId: _id,
       title,
@@ -39,7 +39,7 @@ export async function updatePost(id, prevTitle, prevContents) {
     const post = await Post.updatePost(id, prevTitle, prevContents);
     const { title, contents, author, updatedAt } = post;
     return {
-      id,
+      postId: id,
       title,
       contents,
       author: author.name,
