@@ -80,12 +80,19 @@ describe("포스트 테스트", () => {
 
   it("없는 포스트 찾기", async () => {
     const res = await request(server)
-      .get("/api/posts/" + "notexistspost")
+      .get("/api/posts/" + "notexistpost")
       .send();
 
     expect(res.statusCode).toEqual(403);
     expect(res.body.isOk).toEqual(false);
     expect(res.body.msg).toEqual("존재하지 않는 글입니다.");
+  });
+
+  it("포스트 리스트 호출", async () => {
+    const res = await request(server).get("/api/posts").send();
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.posts.length).toBeGreaterThanOrEqual(1);
   });
 
   it("포스트 삭제하기", async () => {
@@ -94,24 +101,16 @@ describe("포스트 테스트", () => {
       .send();
 
     expect(res.statusCode).toEqual(204);
-    expect(res.body.isOk).toEqual(true);
   });
 
   it("없는 포스트 삭제하기", async () => {
     const res = await request(server)
-      .delete("/api/posts/" + "notexistpost")
+      .delete("/api/posts/" + "notexist")
       .send();
 
     expect(res.statusCode).toEqual(403);
     expect(res.body.isOk).toEqual(false);
-    expect(res.body.isOk).toEqual("존재하지 않는 글입니다.");
-  });
-
-  it("포스트 리스트 호출", async () => {
-    const res = await request(server).get("/api/posts").send();
-
-    expect(res.statusCode).toEqual(200);
-    expect(res.body.posts.length).toBeGreaterThanOrEqual(1);
+    expect(res.body.msg).toEqual("존재하지 않는 글입니다.");
   });
 
   afterAll(async () => {
