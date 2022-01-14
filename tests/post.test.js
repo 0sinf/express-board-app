@@ -16,6 +16,7 @@ describe("포스트 테스트", () => {
   const name = "young";
   const secretKey = process.env.JWT_SECRET;
   let postId;
+  let notOnwerToken = "Bearer ";
 
   beforeAll(async () => {
     const userId = await User.createUser(email, password, name);
@@ -23,6 +24,19 @@ describe("포스트 테스트", () => {
       {
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
         data: userId,
+      },
+      secretKey
+    );
+
+    const notOnwerUserId = await User.createUser(
+      "notOnwer@email.com",
+      "password",
+      "notOnwer"
+    );
+    notOnwerToken += sign(
+      {
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+        data: notOnwerUserId,
       },
       secretKey
     );
@@ -69,6 +83,27 @@ describe("포스트 테스트", () => {
     expect(res.body.contents).toEqual("updatedContents");
   });
 
+  it("Fail 로그인 없이 포스트 수정하기", async () => {
+    const res = await request(server)
+      .put("/api/posts/" + postId)
+      .send({ title: "updatedTitle", contents: "updatedContents" });
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
+    expect(res.body.msg).toEqual("로그인이 필요합니다.");
+  });
+
+  it("Fail 권한 없는데 포스트 수정하기", async () => {
+    const res = await request(server)
+      .put("/api/posts/" + postId)
+      .set("authorization", notOnwerToken)
+      .send({ title: "updatedTitle", contents: "updatedContents" });
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
+    expect(res.body.msg).toEqual("권한이 없습니다.");
+  });
+
   it("없는 포스트 수정하기", async () => {
     const res = await request(server)
       .put("/api/posts/" + "notexistspost")
@@ -95,6 +130,27 @@ describe("포스트 테스트", () => {
 
     expect(res.statusCode).toEqual(200);
     expect(res.body.posts.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("Fail 로그인 없이 포스트 삭제하기", async () => {
+    const res = await request(server)
+      .delete("/api/posts/" + postId)
+      .send();
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
+    expect(res.body.msg).toEqual("로그인이 필요합니다.");
+  });
+
+  it("Fail 권한 없는데 포스트 삭제하기", async () => {
+    const res = await request(server)
+      .delete("/api/posts/" + postId)
+      .set("authorization", notOnwerToken)
+      .send();
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
+    expect(res.body.msg).toEqual("권한이 없습니다.");
   });
 
   it("포스트 삭제하기", async () => {
