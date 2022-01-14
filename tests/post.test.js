@@ -88,6 +88,25 @@ describe("포스트 테스트", () => {
     expect(res.body.msg).toEqual("존재하지 않는 글입니다.");
   });
 
+  it("포스트 삭제하기", async () => {
+    const res = await request(server)
+      .delete("/api/posts/" + postId)
+      .send();
+
+    expect(res.statusCode).toEqual(204);
+    expect(res.body.isOk).toEqual(true);
+  });
+
+  it("없는 포스트 삭제하기", async () => {
+    const res = await request(server)
+      .delete("/api/posts/" + "notexistpost")
+      .send();
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
+    expect(res.body.isOk).toEqual("존재하지 않는 글입니다.");
+  });
+
   it("포스트 리스트 호출", async () => {
     const res = await request(server).get("/api/posts").send();
 
