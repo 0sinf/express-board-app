@@ -8,6 +8,7 @@ import {
 } from "../../services/post.js";
 import loginRequried from "../middlewares/login-requried.js";
 import asyncHandler from "../middlewares/async-handler.js";
+import checkPermission from "../middlewares/check-permission.js";
 
 export default (app) => {
   const route = Router();
@@ -43,6 +44,7 @@ export default (app) => {
   route.put(
     "/:postId",
     loginRequried,
+    checkPermission,
     asyncHandler(async (req, res) => {
       const { postId } = req.params;
       const { title, contents } = req.body;
@@ -54,6 +56,7 @@ export default (app) => {
   route.delete(
     "/:postId",
     loginRequried,
+    checkPermission,
     asyncHandler(async (req, res) => {
       const { postId } = req.params;
       await deletePost(postId);
