@@ -49,3 +49,11 @@ export async function updatePost(id, prevTitle, prevContents) {
     throw new Error("존재하지 않는 글입니다.");
   }
 }
+
+export async function deletePost(id) {
+  try {
+    await Post.deletePost(id);
+  } catch (e) {
+    throw new Error("존재하지 않는 글입니다.");
+  }
+}

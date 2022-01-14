@@ -47,6 +47,10 @@ PostSchema.statics.updatePost = async (id, title, contents) => {
   ).populate("author");
 };
 
+PostSchema.statics.deletePost = async (id) => {
+  await Post.findByIdAndDelete(id);
+};
+
 const Post = mongoose.model("Post", PostSchema);
 
 export { Post };

@@ -4,6 +4,7 @@ import {
   findPostById,
   findAllPosts,
   updatePost,
+  deletePost,
 } from "../../services/post.js";
 import loginRequried from "../middlewares/login-requried.js";
 import asyncHandler from "../middlewares/async-handler.js";
@@ -42,6 +43,15 @@ export default (app) => {
       const { title, contents } = req.body;
       const post = await updatePost(postId, title, contents);
       res.status(200).json(post);
+    })
+  );
+
+  route.delete(
+    "/:postId",
+    asyncHandler(async (req, res) => {
+      const { postId } = req.params;
+      await deletePost(postId);
+      res.status(204).json();
     })
   );
 
