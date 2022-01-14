@@ -61,6 +61,7 @@ describe("포스트 테스트", () => {
   it("포스트 수정하기", async () => {
     const res = await request(server)
       .put("/api/posts/" + postId)
+      .set("authorization", token)
       .send({ title: "updatedTitle", contents: "updatedContents" });
 
     expect(res.statusCode).toEqual(200);
@@ -71,6 +72,7 @@ describe("포스트 테스트", () => {
   it("없는 포스트 수정하기", async () => {
     const res = await request(server)
       .put("/api/posts/" + "notexistspost")
+      .set("authorization", token)
       .send({ title: "updatedTitle", contents: "updatedContents" });
 
     expect(res.statusCode).toEqual(403);
@@ -98,6 +100,7 @@ describe("포스트 테스트", () => {
   it("포스트 삭제하기", async () => {
     const res = await request(server)
       .delete("/api/posts/" + postId)
+      .set("authorization", token)
       .send();
 
     expect(res.statusCode).toEqual(204);
@@ -106,6 +109,7 @@ describe("포스트 테스트", () => {
   it("없는 포스트 삭제하기", async () => {
     const res = await request(server)
       .delete("/api/posts/" + "notexist")
+      .set("authorization", token)
       .send();
 
     expect(res.statusCode).toEqual(403);

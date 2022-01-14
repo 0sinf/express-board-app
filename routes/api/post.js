@@ -38,6 +38,7 @@ export default (app) => {
 
   route.put(
     "/:postId",
+    loginRequried,
     asyncHandler(async (req, res) => {
       const { postId } = req.params;
       const { title, contents } = req.body;
@@ -48,6 +49,7 @@ export default (app) => {
 
   route.delete(
     "/:postId",
+    loginRequried,
     asyncHandler(async (req, res) => {
       const { postId } = req.params;
       await deletePost(postId);
