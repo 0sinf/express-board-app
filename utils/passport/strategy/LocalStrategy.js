@@ -16,6 +16,6 @@ export default new LocalStratey(opts, async function (email, password, done) {
   if (!user.verifyPassword(password)) {
     return done(null, false);
   }
-  const token = await createToken(user);
+  const token = createToken(user);
   return done(null, token);
 });

@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const secretKey = process.env.JWT_SECRET;
 
-export async function createToken(user) {
+export function createToken(user) {
   const token = jwt.sign(
     {
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
@@ -16,6 +16,6 @@ export async function createToken(user) {
   return token;
 }
 
-export async function verifyToken(token, cb) {
+export function verifyToken(token, cb) {
   return jwt.verify(token, secretKey, cb);
 }
