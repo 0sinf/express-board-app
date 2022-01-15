@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import pino from "pino";
 
-import passport from "./utils/passport/index.js";
-import route from "./routes/index.js";
+import passport from "./src/utils/passport/index.js";
+import route from "./src/routes/index.js";
 
 passport();
 dotenv.config();

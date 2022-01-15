@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { User } from "../models/User.js";
-import server from "../app.js";
+import server from "../../app.js";
 import mongoose from "mongoose";
 
 dotenv.config();
