@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 
-import loader from "./src/loader/index.js";
-import logger from "./src/utils/logger.js";
+import loader from "./loader/index.js";
+import logger from "./utils/logger.js";
 dotenv.config();
 
 const port = parseInt(process.env.PORT) || 3000;
