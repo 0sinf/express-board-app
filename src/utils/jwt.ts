@@ -8,7 +8,7 @@ const secretKey: Secret = String(process.env.JWT_SECRET);
 export function createToken(user: IUser) {
   const jwtPayload: JwtPayload = {
     exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
-    data: user.id,
+    data: user._id,
   };
   const token = jwt.sign(jwtPayload, secretKey);
 
