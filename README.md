@@ -24,3 +24,5 @@ express 프레임워크로 게시판 앱 만들기
 
 1. TS 설정
 2. Express, mongoose TS 적용
+
+## Github web hooks 연동
