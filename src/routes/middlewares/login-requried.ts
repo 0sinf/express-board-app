@@ -1,7 +1,8 @@
+import { Request, Response, NextFunction } from "express";
 import { User } from "../../models/User.js";
 import { verifyToken } from "../../utils/jwt.js";
 
-export default (req, res, next) => {
+export default (req: Request, res: Response, next: NextFunction) => {
   const token =
     req.headers.authorization &&
     req.headers.authorization.split(" ")[0] === "Bearer" &&
@@ -16,7 +17,8 @@ export default (req, res, next) => {
       next("로그인이 필요합니다.");
       return;
     }
-    req.user = await User.findById(decoded.data);
+    const user = await User.findUserById(String(decoded));
+    req.user = user;
     next();
   });
 };

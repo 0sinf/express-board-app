@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { IUser } from "../types/index";
+import { IUser, IUserDocument, IUserModel } from "../types/index";
+import { JwtPayload } from "jsonwebtoken";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -27,15 +28,22 @@ UserSchema.statics.createUser = async function (
   email: string,
   password: string,
   name: string
-): Promise<string> {
-  const user: IUser = await User.create({ email, password, name });
+) {
+  const user: IUser = await User.create({
+    email,
+    password,
+    name,
+  });
   return user._id;
 };
 
-UserSchema.statics.findUserById = async function (
-  email: string
-): Promise<IUser> {
-  const user: IUser = await User.findOne({ email });
+UserSchema.statics.findUserByEmail = async function (email: string) {
+  const user = await User.findOne({ email });
+  return user;
+};
+
+UserSchema.statics.findUserById = async function (id: string) {
+  const user = await User.findById(id);
   return user;
 };
 
@@ -43,6 +51,6 @@ UserSchema.methods.verifyPassword = function (password: string): boolean {
   return bcrypt.compareSync(password, this.password);
 };
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model<IUserDocument, IUserModel>("User", UserSchema);
 
 export { User };

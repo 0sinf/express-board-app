@@ -13,7 +13,7 @@ export default new LocalStratey(opts, async function (
   password: string,
   done
 ) {
-  const user = await User.findUserById(email);
+  const user = await User.findUserByEmail(email);
   if (!user) {
     return done(null, false);
   }

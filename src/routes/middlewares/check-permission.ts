@@ -1,6 +1,7 @@
+import { Request, Response, NextFunction } from "express";
 import { Post } from "../../models/Post.js";
 
-export default function (req, res, next) {
+export default function (req: Request, res: Response, next: NextFunction) {
   const { user } = req;
   const { postId } = req.params;
 
@@ -12,7 +13,7 @@ export default function (req, res, next) {
         next("권한이 없습니다.");
       }
     })
-    .catch((err) => {
+    .catch((err: any) => {
       next("존재하지 않는 글입니다.");
     });
 }

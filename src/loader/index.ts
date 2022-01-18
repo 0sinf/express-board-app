@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -32,7 +32,7 @@ export default function loader() {
     next("404 Not Found");
   });
 
-  app.use((err, req, res, next) => {
+  app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     res.status(403).json({ isOk: false, msg: err });
   });
 
