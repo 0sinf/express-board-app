@@ -2,9 +2,9 @@ import "regenerator-runtime";
 import request from "supertest";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-import server from "../app.js";
-import { User } from "../models/User.js";
-import { sign } from "jsonwebtoken";
+import server from "../src/app";
+import { User } from "../src/models/User";
+import { sign, SignOptions } from "jsonwebtoken";
 import mongoose from "mongoose";
 
 dotenv.config();
@@ -15,31 +15,24 @@ describe("포스트 테스트", () => {
   const password = bcrypt.hashSync("password", 10);
   const name = "young";
   const secretKey = process.env.JWT_SECRET;
-  let postId;
+  let postId: string;
   let notOnwerToken = "Bearer ";
 
   beforeAll(async () => {
     const userId = await User.createUser(email, password, name);
-    token += sign(
-      {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
-        data: userId,
-      },
-      secretKey
-    );
+    const payload = { _id: userId.toString() };
+    const signOpt: SignOptions = {
+      expiresIn: "1d",
+    };
+    token += sign(payload, secretKey, signOpt);
 
     const notOnwerUserId = await User.createUser(
       "notOnwer@email.com",
       "password",
       "notOnwer"
     );
-    notOnwerToken += sign(
-      {
-        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
-        data: notOnwerUserId,
-      },
-      secretKey
-    );
+    const payload2 = { _id: notOnwerUserId.toString() };
+    notOnwerToken += sign(payload2, secretKey, signOpt);
   });
 
   it("포스트 생성 테스트", async () => {

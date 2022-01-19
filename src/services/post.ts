@@ -1,11 +1,15 @@
-import { Post } from "../models/Post.js";
+import { Post } from "../models/Post";
 
-export async function createPost(title, contents, authorId) {
+export async function createPost(
+  title: string,
+  contents: string,
+  authorId: string
+) {
   const post = await Post.createPost(title, contents, authorId);
   return post.id;
 }
 
-export async function findPostById(postId) {
+export async function findPostById(postId: string) {
   try {
     const post = await Post.findPostById(postId);
     const { title, contents, author, createdAt } = post;
@@ -34,7 +38,11 @@ export async function findAllPosts() {
   });
 }
 
-export async function updatePost(id, prevTitle, prevContents) {
+export async function updatePost(
+  id: string,
+  prevTitle: string,
+  prevContents: string
+) {
   try {
     const post = await Post.updatePost(id, prevTitle, prevContents);
     const { title, contents, author, updatedAt } = post;
@@ -50,7 +58,7 @@ export async function updatePost(id, prevTitle, prevContents) {
   }
 }
 
-export async function deletePost(id) {
+export async function deletePost(id: string) {
   try {
     await Post.deletePost(id);
   } catch (e) {

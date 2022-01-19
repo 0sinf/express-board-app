@@ -1,5 +1,5 @@
-import user from "./api/user.js";
-import post from "./api/post.js";
+import user from "./api/user";
+import post from "./api/post";
 import { Router } from "express";
 
 const app: Router = Router();

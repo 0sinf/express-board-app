@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { IUser, IUserDocument, IUserModel } from "../types/index";
-import { JwtPayload } from "jsonwebtoken";
 
 const UserSchema = new mongoose.Schema(
   {

@@ -1,12 +1,12 @@
+import { Jwt, JwtPayload } from "jsonwebtoken";
 import { Document, Model } from "mongoose";
-import { JwtPayload } from "jsonwebtoken";
 
 export interface IUser extends Document {
   email: string;
   password: string;
   name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IUserDocument extends IUser {
@@ -20,5 +20,11 @@ export interface IUserModel extends Model<IUser> {
     name: string
   ) => Promise<string>;
   findUserByEmail: (email: string) => Promise<IUserDocument>;
-  findUserById: (id: string) => Promise<IUserDocument>;
+  findUserById: (id: string | Jwt | JwtPayload) => Promise<IUserDocument>;
+}
+
+declare global {
+  namespace Express {
+    export interface User extends IUserDocument {}
+  }
 }

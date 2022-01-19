@@ -5,12 +5,12 @@ import {
   findAllPosts,
   updatePost,
   deletePost,
-} from "../../services/post.js";
-import loginRequried from "../middlewares/login-requried.js";
-import asyncHandler from "../middlewares/async-handler.js";
-import checkPermission from "../middlewares/check-permission.js";
+} from "../../services/post";
+import loginRequried from "../middlewares/login-requried";
+import asyncHandler from "../middlewares/async-handler";
+import checkPermission from "../middlewares/check-permission";
 
-export default (app) => {
+export default (app: Router) => {
   const route = Router();
 
   route.post(

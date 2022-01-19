@@ -1,6 +1,27 @@
-import mongoose from "mongoose";
+import mongoose, { Document, PopulatedDoc, Model } from "mongoose";
+import { IUserDocument } from "../types/index";
 
-const PostSchema = new mongoose.Schema(
+interface IPost extends Document {
+  title: string;
+  contents: string;
+  author: PopulatedDoc<IUserDocument>;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface IPostModel extends Model<IPost> {
+  createPost: (
+    title: string,
+    contents: string,
+    author: string
+  ) => Promise<IPost>;
+  findPostById: (postId: string) => Promise<IPost>;
+  findAll: () => Promise<Array<IPost>>;
+  updatePost: (id: string, title: string, contents: string) => Promise<IPost>;
+  deletePost: (id: string) => Promise<void>;
+}
+
+const PostSchema = new mongoose.Schema<IPost>(
   {
     title: {
       type: String,
@@ -51,6 +72,6 @@ PostSchema.statics.deletePost = async (id) => {
   await Post.findByIdAndDelete(id);
 };
 
-const Post = mongoose.model("Post", PostSchema);
+const Post = mongoose.model<IPost, IPostModel>("Post", PostSchema);
 
 export { Post };

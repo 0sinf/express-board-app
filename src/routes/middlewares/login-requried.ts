@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { User } from "../../models/User.js";
-import { verifyToken } from "../../utils/jwt.js";
+import { User } from "../../models/User";
+import { verifyToken } from "../../utils/jwt";
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const token =
@@ -17,7 +17,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
       next("로그인이 필요합니다.");
       return;
     }
-    const user = await User.findUserById(String(decoded));
+    console.log(decoded);
+    const user = await User.findUserById(decoded);
     req.user = user;
     next();
   });

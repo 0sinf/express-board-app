@@ -1,8 +1,8 @@
 import express, { Router, Request, Response } from "express";
 import passport from "passport";
-import { createUser } from "../../services/user.js";
-import loginRequried from "../middlewares/login-requried.js";
-import asyncHandler from "../middlewares/async-handler.js";
+import { createUser } from "../../services/user";
+import loginRequried from "../middlewares/login-requried";
+import asyncHandler from "../middlewares/async-handler";
 
 export default (app: Router) => {
   const route = express.Router();

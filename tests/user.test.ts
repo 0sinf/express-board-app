@@ -1,11 +1,12 @@
 import "regenerator-runtime";
 import request from "supertest";
 import bcrypt from "bcrypt";
-import { sign } from "jsonwebtoken";
+import { sign, SignOptions } from "jsonwebtoken";
 import dotenv from "dotenv";
-import { User } from "../models/User.js";
-import server from "../app.js";
+import { User } from "../src/models/User";
+import server from "../src/app";
 import mongoose from "mongoose";
+import { IUser } from "../src/types/index";
 
 dotenv.config();
 
@@ -69,7 +70,7 @@ describe("유저 로그인 테스트", () => {
 
 describe("유저 로그인 required 테스트", () => {
   let token = "Bearer ";
-  let user;
+  let user: IUser;
   beforeAll(async () => {
     user = await User.create({
       email: "email@example.com",
@@ -104,14 +105,13 @@ describe("유저 로그인 required 테스트", () => {
   //   const res = await request(server).get("/api/users").send();
   // });
   it("만료된 토큰으로 로그인 필요 접근", async () => {
+    const payload = { _id: user._id.toString() };
+    const signOpt: SignOptions = {
+      expiresIn: "1d",
+    };
     const secretKey = process.env.JWT_SECRET;
-    const expToken = sign(
-      {
-        exp: Math.floor(Date.now() / 1000) - 60 * 60,
-        data: user.id,
-      },
-      secretKey
-    );
+    const expToken = sign(payload, secretKey, signOpt);
+
     const res = await request(server)
       .get("/api/users")
       .set("authorization", expToken)

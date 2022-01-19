@@ -2,9 +2,9 @@ import express, { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
-import logger from "../utils/logger.js";
-import passport from "../utils/passport/index.js";
-import route from "../routes/index.js";
+import logger from "../utils/logger";
+import passport from "../utils/passport/index";
+import route from "../routes/index";
 
 export default function loader() {
   const app = express();

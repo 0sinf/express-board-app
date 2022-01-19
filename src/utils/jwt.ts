@@ -6,7 +6,7 @@ dotenv.config();
 const secretKey: Secret = String(process.env.JWT_SECRET);
 
 export function createToken(user: IUserDocument) {
-  const payload = user._id;
+  const payload = { _id: user._id.toString() };
   const signOpt: SignOptions = {
     expiresIn: "1d",
   };

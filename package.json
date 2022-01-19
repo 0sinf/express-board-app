@@ -6,7 +6,7 @@
   "author": "sinf <wjdtp93@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "tsc-watch --onSuccess \"ts-node dist/app.js\"",
     "test": "jest --forceExit"
   },
   "dependencies": {
@@ -24,16 +24,22 @@
     "pino-pretty": "^7.3.0"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.16.7",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
+    "@types/jest": "^26.0.23",
     "@types/jsonwebtoken": "^8.5.7",
+    "@types/node": "^16.11.21",
     "@types/passport": "^1.0.7",
     "@types/passport-local": "^1.0.34",
+    "@types/supertest": "^2.0.11",
     "jest": "^27.4.5",
     "nodemon": "^2.0.15",
     "regenerator-runtime": "^0.13.9",
     "supertest": "^6.1.6",
-    "ts-node": "^10.4.0"
-  },
-  "type": "module"
+    "ts-jest": "^27.1.3",
+    "ts-node": "^10.4.0",
+    "tsc-watch": "^4.6.0",
+    "typescript": "^4.5.4"
+  }
 }

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Post } from "../../models/Post.js";
+import { Post } from "../../models/Post";
 
 export default function (req: Request, res: Response, next: NextFunction) {
   const { user } = req;
