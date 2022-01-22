@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { body, validationResult } from "express-validator";
 import {
   createPost,
   findPostById,
@@ -16,9 +17,21 @@ export default (app: Router) => {
   route.post(
     "/",
     loginRequried,
+    body("title")
+      .isString()
+      .isLength({ max: 50 })
+      .withMessage("제목이 너무 깁니다. 50자 이내로 적어주세요."),
+    body("contents").isString(),
     asyncHandler(async (req, res) => {
-      const userId = req.user.id;
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        throw new Error(errors.array()[0].msg);
+      }
+
+      const userId: string = req.user.id;
       const { title, contents } = req.body;
+
       const postId = await createPost(title, contents, userId);
       res.status(200).json({ isOk: true, postId });
     })
