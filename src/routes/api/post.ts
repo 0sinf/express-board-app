@@ -21,7 +21,10 @@ export default (app: Router) => {
       .isString()
       .isLength({ max: 50 })
       .withMessage("제목이 너무 깁니다. 50자 이내로 적어주세요."),
-    body("contents").isString(),
+    body("contents")
+      .isString()
+      .isLength({ max: 200 })
+      .withMessage("내용이 너무 깁니다. 200자 이내로 적어주세요."),
     asyncHandler(async (req, res) => {
       const errors = validationResult(req);
 
@@ -58,6 +61,14 @@ export default (app: Router) => {
     "/:postId",
     loginRequried,
     checkPermission,
+    body("title")
+      .isString()
+      .isLength({ max: 50 })
+      .withMessage("제목이 너무 깁니다. 50자 이내로 적어주세요."),
+    body("contents")
+      .isString()
+      .isLength({ max: 200 })
+      .withMessage("내용이 너무 깁니다. 200자 이내로 적어주세요."),
     asyncHandler(async (req, res) => {
       const { postId } = req.params;
       const { title, contents } = req.body;
