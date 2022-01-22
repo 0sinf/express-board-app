@@ -52,6 +52,21 @@ describe("포스트 테스트", () => {
     postId = res.body.postId;
   });
 
+  it("Fail 포스트 생성 테스트 너무 긴 타이틀", async () => {
+    const res = await request(server)
+      .post("/api/posts")
+      .set("authorization", token)
+      .send({
+        title:
+          "titletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitletitle",
+        contents: "contents",
+      });
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
+    expect(res.body.msg).toEqual("제목이 너무 깁니다. 50자 이내로 적어주세요.");
+  });
+
   it("생성된 포스트 get", async () => {
     const res = await request(server)
       .get("/api/posts/" + postId)
