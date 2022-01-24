@@ -7,7 +7,7 @@ export default function (req: Request, res: Response, next: NextFunction) {
 
   Post.findPostById(postId)
     .then((post) => {
-      if (post.author.id === user.id) {
+      if (post.author.googleId === user.googleId) {
         next();
       } else {
         next("권한이 없습니다.");

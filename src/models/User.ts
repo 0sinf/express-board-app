@@ -1,53 +1,77 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import { IUser, IUserDocument, IUserModel } from "../types/index";
+import { Jwt, JwtPayload } from "jsonwebtoken";
+import mongoose, { Model, Document } from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+interface IUser {
+  displayName: string;
+  name: {
+    familyName: string;
+    givenName: string;
+  };
+  photos: {
+    value: string;
+  }[];
+}
+
+export interface IUserDocument extends Document {
+  googleId: string;
+  nickname: string;
+  firstName: string;
+  lastName: string;
+  profile: string;
+  provider: "google";
+  _raw?: object;
+  _json?: object;
+}
+
+interface IUserModel extends Model<IUserDocument> {
+  findOrCreate: (
+    googleId: string | Jwt | JwtPayload,
+    user?: IUser
+  ) => Promise<IUserDocument>;
+}
+
+const UserSchema = new mongoose.Schema<IUserDocument>(
   {
-    email: {
+    googleId: {
       type: String,
       required: true,
     },
-    password: {
+    nickname: {
       type: String,
       required: true,
     },
-    name: {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    profile: {
       type: String,
       required: true,
     },
   },
   {
-    timestamps: true,
     versionKey: false,
   }
 );
 
-UserSchema.statics.createUser = async function (
-  email: string,
-  password: string,
-  name: string
-) {
-  const user: IUser = await User.create({
-    email,
-    password,
-    name,
+UserSchema.statics.findOrCreate = async (decoded, user) => {
+  const googleUser = await User.findOne({ googleId: decoded.googleId });
+  // 있는 경우 리턴
+  if (googleUser) {
+    return googleUser;
+  }
+  // 없는 경우 생성
+  return await User.create({
+    googleId: decoded.googleId,
+    nickname: user.displayName,
+    firstName: user.name.givenName,
+    lastName: user.name.familyName,
+    profile: user.photos[0].value,
   });
-  return user._id;
-};
-
-UserSchema.statics.findUserByEmail = async function (email: string) {
-  const user = await User.findOne({ email });
-  return user;
-};
-
-UserSchema.statics.findUserById = async function (id: string) {
-  const user = await User.findById(id);
-  return user;
-};
-
-UserSchema.methods.verifyPassword = function (password: string): boolean {
-  return bcrypt.compareSync(password, this.password);
 };
 
 const User = mongoose.model<IUserDocument, IUserModel>("User", UserSchema);

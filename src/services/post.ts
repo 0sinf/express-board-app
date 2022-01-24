@@ -18,7 +18,7 @@ export async function findPostById(postId: string) {
       title,
       contents,
       createdAt,
-      author: author.name,
+      author: author.lastName + " " + author.firstName,
     };
   } catch (e) {
     throw new Error("존재하지 않는 글입니다.");
@@ -27,12 +27,12 @@ export async function findPostById(postId: string) {
 
 export async function findAllPosts() {
   const posts = await Post.findAll();
-  return posts.map(({ _id, title, contents, author, createdAt }) => {
+  return posts.map(({ id, title, contents, author, createdAt }) => {
     return {
-      postId: _id,
+      postId: id,
       title,
       contents,
-      author: author.name,
+      author: author.lastName + " " + author.firstName,
       createdAt,
     };
   });
@@ -50,7 +50,7 @@ export async function updatePost(
       postId: id,
       title,
       contents,
-      author: author.name,
+      author: author.lastName + " " + author.firstName,
       updatedAt,
     };
   } catch (e) {
