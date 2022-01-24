@@ -14,17 +14,35 @@ describe("포스트 테스트", () => {
   let notOnwerToken = "Bearer ";
 
   beforeAll(async () => {
-    const payload = { googleId: process.env.TEST_GOOGLEID };
+    // 가짜 유저 생성
+    await mongoose
+      .createConnection(process.env.MONGO_URI + "/boardTest")
+      .collection("users")
+      .insertOne({
+        googleId: "123451234512345",
+        nickname: "owner",
+        firstName: "dummy",
+        lastName: "dummy",
+        profile: "lksjadlkfjkslkjdf",
+      });
+
+    await mongoose
+      .createConnection(process.env.MONGO_URI + "/boardTest")
+      .collection("users")
+      .insertOne({
+        googleId: "543215432154321",
+        nickname: "not owner",
+        firstName: "dummy",
+        lastName: "dummy",
+        profile: "lksjadlkfjkslkjdf",
+      });
+
     const signOpt: SignOptions = {
       expiresIn: "1d",
     };
-    token += sign(payload, secretKey, signOpt);
+    token += sign({ googleId: "123451234512345" }, secretKey, signOpt);
 
-    notOnwerToken += sign(
-      { googleId: "104020731298554123456" },
-      secretKey,
-      signOpt
-    );
+    notOnwerToken += sign({ googleId: "543215432154321" }, secretKey, signOpt);
   });
 
   it("포스트 생성 테스트", async () => {
@@ -86,7 +104,7 @@ describe("포스트 테스트", () => {
       expect.arrayContaining(["title", "contents", "author"])
     );
     expect(res.body.title).toEqual("title");
-    expect(res.body.author).toEqual("dummy dummy");
+    expect(res.body.author).toEqual("owner");
   });
 
   it("포스트 수정하기", async () => {
@@ -195,6 +213,11 @@ describe("포스트 테스트", () => {
     await mongoose
       .createConnection(process.env.MONGO_URI + "/boardTest")
       .collection("posts")
+      .deleteMany({});
+
+    await mongoose
+      .createConnection(process.env.MONGO_URI + "/boardTest")
+      .collection("users")
       .deleteMany({});
   });
 });
