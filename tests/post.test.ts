@@ -1,38 +1,30 @@
 import "regenerator-runtime";
 import request from "supertest";
 import dotenv from "dotenv";
-import bcrypt from "bcrypt";
 import server from "../src/app";
-import { User } from "../src/models/User";
 import { sign, SignOptions } from "jsonwebtoken";
 import mongoose from "mongoose";
 
 dotenv.config();
 
 describe("포스트 테스트", () => {
-  let token = "Bearer ";
-  const email = "example@email.com";
-  const password = bcrypt.hashSync("password", 10);
-  const name = "young";
   const secretKey = process.env.JWT_SECRET;
   let postId: string;
+  let token = "Bearer ";
   let notOnwerToken = "Bearer ";
 
   beforeAll(async () => {
-    const userId = await User.createUser(email, password, name);
-    const payload = { _id: userId.toString() };
+    const payload = { googleId: process.env.TEST_GOOGLEID };
     const signOpt: SignOptions = {
       expiresIn: "1d",
     };
     token += sign(payload, secretKey, signOpt);
 
-    const notOnwerUserId = await User.createUser(
-      "notOnwer@email.com",
-      "password",
-      "notOnwer"
+    notOnwerToken += sign(
+      { googleId: "104020731298554123456" },
+      secretKey,
+      signOpt
     );
-    const payload2 = { _id: notOnwerUserId.toString() };
-    notOnwerToken += sign(payload2, secretKey, signOpt);
   });
 
   it("포스트 생성 테스트", async () => {
@@ -94,7 +86,7 @@ describe("포스트 테스트", () => {
       expect.arrayContaining(["title", "contents", "author"])
     );
     expect(res.body.title).toEqual("title");
-    expect(res.body.author).toEqual("young");
+    expect(res.body.author).toEqual("dummy dummy");
   });
 
   it("포스트 수정하기", async () => {
@@ -200,12 +192,6 @@ describe("포스트 테스트", () => {
   });
 
   afterAll(async () => {
-    await User.deleteOne({
-      email,
-      password,
-      name,
-    });
-
     await mongoose
       .createConnection(process.env.MONGO_URI + "/boardTest")
       .collection("posts")

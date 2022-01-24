@@ -17,7 +17,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
       next("로그인이 필요합니다.");
       return;
     }
-    const user = await User.findUserById(decoded);
+    const user = await User.findOrCreate(decoded);
     req.user = user;
     next();
   });

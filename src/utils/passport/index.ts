@@ -1,7 +1,7 @@
 import passport from "passport";
-import local from "./strategy/LocalStrategy";
+import google from "./strategy/GoogleStrategy";
 
 export default () => {
-  passport.use(local);
+  passport.use(google);
   passport.initialize();
 };

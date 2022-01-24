@@ -1,5 +1,5 @@
 import mongoose, { Document, PopulatedDoc, Model } from "mongoose";
-import { IUserDocument } from "../types/index";
+import { IUserDocument } from "./User";
 
 interface IPost extends Document {
   title: string;
