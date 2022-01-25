@@ -42,11 +42,7 @@ describe("포스트 테스트", () => {
     };
     token += sign({ googleId: "123451234512345" }, secretKey, signOpt);
 
-    notOnwerToken += sign(
-      { googleId: "104020731298554123456" },
-      secretKey,
-      signOpt
-    );
+    notOnwerToken += sign({ googleId: "543215432154321" }, secretKey, signOpt);
   });
 
   it("포스트 생성 테스트", async () => {
