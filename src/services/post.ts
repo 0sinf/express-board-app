@@ -32,10 +32,6 @@ export async function findAllPosts() {
       postId: id,
       title,
       contents,
-<<<<<<< HEAD
-=======
-
->>>>>>> f/sprint
       author: author.nickname,
       createdAt,
     };
