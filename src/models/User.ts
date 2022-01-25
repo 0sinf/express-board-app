@@ -28,6 +28,7 @@ interface IUserModel extends Model<IUserDocument> {
     googleId: string | Jwt | JwtPayload,
     user?: IUser
   ) => Promise<IUserDocument>;
+  findUserById: (userId: string) => Promise<IUserDocument>;
 }
 
 const UserSchema = new mongoose.Schema<IUserDocument>(
@@ -72,6 +73,11 @@ UserSchema.statics.findOrCreate = async (decoded, user) => {
     lastName: user.name.familyName,
     profile: user.photos[0].value,
   });
+};
+
+UserSchema.statics.findUserById = async (userId: string) => {
+  const user = await User.findById(userId);
+  return user;
 };
 
 const User = mongoose.model<IUserDocument, IUserModel>("User", UserSchema);
