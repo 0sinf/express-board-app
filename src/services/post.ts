@@ -18,7 +18,7 @@ export async function findPostById(postId: string) {
       title,
       contents,
       createdAt,
-      author: author.lastName + " " + author.firstName,
+      author: author.nickname,
     };
   } catch (e) {
     throw new Error("존재하지 않는 글입니다.");
@@ -32,7 +32,8 @@ export async function findAllPosts() {
       postId: id,
       title,
       contents,
-      author: author.lastName + " " + author.firstName,
+
+      author: author.nickname,
       createdAt,
     };
   });
@@ -50,7 +51,7 @@ export async function updatePost(
       postId: id,
       title,
       contents,
-      author: author.lastName + " " + author.firstName,
+      author: author.nickname,
       updatedAt,
     };
   } catch (e) {
