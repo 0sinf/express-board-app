@@ -32,7 +32,6 @@ export async function findAllPosts() {
       postId: id,
       title,
       contents,
-
       author: author.nickname,
       createdAt,
     };

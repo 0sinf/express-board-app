@@ -104,7 +104,6 @@ describe("포스트 테스트", () => {
       expect.arrayContaining(["title", "contents", "author"])
     );
     expect(res.body.title).toEqual("title");
-
     expect(res.body.author).toEqual("owner");
   });
 
