@@ -1,25 +1,31 @@
 import { Router } from "express";
 import passport from "passport";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import asyncHandler from "../middlewares/async-handler";
+
+dotenv.config();
 
 export default (app: Router) => {
   const route = Router();
 
   route.get("/google", passport.authenticate("google", { scope: ["profile"] }));
 
-  route.get("/google/callback", async (req, res, next) => {
-    passport.authenticate(
-      "google",
-      { session: false },
-      async (error, user, info) => {
-        if (error) {
-          next("not logined");
-        }
-        // 받은 user 데이터로 유저 정보 저장
-        // access token, refresh token 생성해서 refresh는 유저정보에 저장
-        // access token, refresh token 쿠키로 발급
-      }
-    );
-  });
+  route.get(
+    "/google/callback",
+    passport.authenticate("google", { session: false }),
+    asyncHandler(async (req, res) => {
+      const { user } = req;
+      const accessToken = jwt.sign(
+        { googleId: user.googleId },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+      res.cookie("accessToken", accessToken);
+      res.cookie("refreshToken", user.refreshToken);
+      res.status(200).json({ isOk: true });
+    })
+  );
 
   app.use("/auth", route);
 };
