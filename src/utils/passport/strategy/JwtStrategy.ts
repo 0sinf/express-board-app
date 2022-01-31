@@ -1,5 +1,5 @@
 import {
-  Strategy as JwtStrategy,
+  Strategy,
   ExtractJwt,
   VerifiedCallback,
   StrategyOptions,
@@ -16,6 +16,8 @@ const jwtVerify = async (
   done: VerifiedCallback
 ) => {
   if (!payload) return done(null, false, "로그인이 필요합니다.");
-  const user = await User.findByGoogleId(payload);
+  const user = await User.findByGoogleId(payload.googlId);
   done(null, user);
 };
+
+export const JwtStrategy = new Strategy(jwtOpt, jwtVerify);
