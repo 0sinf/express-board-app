@@ -10,11 +10,18 @@ export const isLoginedRequired = (
     "jwt",
     { session: false },
     async (error, user, info) => {
-      if (error || !user) {
-        return next("로그인이 필요합니다.");
-      }
+      // 아예 말도 안되는 에러
+
+      // 토큰 경우의 수
+      // 액세스 토큰 만료, 리프레시 토큰 만료
+
+      // 액세스 토큰 만료, 리프레시 토큰 ok
+
+      // 액세스 토큰 ok, 리프레시 토큰 만료
+
+      // 둘 다 ok
       req.user = user;
       next();
     }
-  );
+  )(req, res, next);
 };
