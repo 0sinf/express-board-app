@@ -12,11 +12,11 @@ export const isLoginedRequired = (
     async (error, user, info) => {
       // 아예 말도 안되는 에러
       if (error) {
-        // 액세스 토큰 만료, 리프레시 토큰 만료
-        // 액세스 토큰 만료, 리프레시 토큰 ok
         return next(error);
       }
       if (!user) {
+        // 액세스 토큰 만료, 리프레시 토큰 만료
+        // 액세스 토큰 만료, 리프레시 토큰 ok
         return next("로그인이 필요합니다.");
       }
 
