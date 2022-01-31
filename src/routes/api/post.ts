@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { body, validationResult } from "express-validator";
+import { isLoginedRequired } from "../../utils/passport/guards/jwt-guard";
 import {
   createPost,
   findPostById,
@@ -7,7 +8,6 @@ import {
   updatePost,
   deletePost,
 } from "../../services/post";
-import loginRequried from "../middlewares/login-requried";
 import asyncHandler from "../middlewares/async-handler";
 import checkPermission from "../middlewares/check-permission";
 
@@ -16,7 +16,7 @@ export default (app: Router) => {
 
   route.post(
     "/",
-    loginRequried,
+    isLoginedRequired,
     body("title")
       .isString()
       .isLength({ max: 50 })
@@ -59,7 +59,7 @@ export default (app: Router) => {
 
   route.put(
     "/:postId",
-    loginRequried,
+    isLoginedRequired,
     checkPermission,
     body("title")
       .isString()
@@ -79,7 +79,7 @@ export default (app: Router) => {
 
   route.delete(
     "/:postId",
-    loginRequried,
+    isLoginedRequired,
     checkPermission,
     asyncHandler(async (req, res) => {
       const { postId } = req.params;
