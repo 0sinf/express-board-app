@@ -12,6 +12,7 @@ describe("포스트 테스트", () => {
   let postId: string;
   let token = "Bearer ";
   let notOnwerToken = "Bearer ";
+  let expiredToken = "Bearer ";
 
   beforeAll(async () => {
     const refreshToken = sign({}, secretKey, { expiresIn: "14d" });
@@ -47,6 +48,10 @@ describe("포스트 테스트", () => {
     token += sign({ googleId: "123451234512345" }, secretKey, signOpt);
 
     notOnwerToken += sign({ googleId: "543215432154321" }, secretKey, signOpt);
+
+    expiredToken += sign({ googleId: "123451234512345" }, secretKey, {
+      expiresIn: "0",
+    });
   });
 
   it("포스트 생성 테스트", async () => {
@@ -64,6 +69,19 @@ describe("포스트 테스트", () => {
       expect.arrayContaining(["isOk", "postId"])
     );
     postId = res.body.postId;
+  });
+
+  it("Fail 만료된 토큰으로 포스트 생성 테스트", async () => {
+    const res = await request(server)
+      .post("/api/posts")
+      .set("authorization", expiredToken)
+      .send({
+        title: "title",
+        contents: "contents",
+      });
+
+    expect(res.statusCode).toEqual(403);
+    expect(res.body.isOk).toEqual(false);
   });
 
   it("Fail 포스트 생성 테스트 너무 긴 타이틀", async () => {
