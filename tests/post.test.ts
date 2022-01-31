@@ -14,6 +14,8 @@ describe("포스트 테스트", () => {
   let notOnwerToken = "Bearer ";
 
   beforeAll(async () => {
+    const refreshToken = sign({}, secretKey, { expiresIn: "14d" });
+
     // 가짜 유저 생성
     await mongoose
       .createConnection(process.env.MONGO_URI + "/boardTest")
@@ -24,6 +26,7 @@ describe("포스트 테스트", () => {
         firstName: "dummy",
         lastName: "dummy",
         profile: "lksjadlkfjkslkjdf",
+        refreshToken,
       });
 
     await mongoose
@@ -35,10 +38,11 @@ describe("포스트 테스트", () => {
         firstName: "dummy",
         lastName: "dummy",
         profile: "lksjadlkfjkslkjdf",
+        refreshToken,
       });
 
     const signOpt: SignOptions = {
-      expiresIn: "1d",
+      expiresIn: "1h",
     };
     token += sign({ googleId: "123451234512345" }, secretKey, signOpt);
 

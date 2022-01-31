@@ -33,7 +33,7 @@ interface IUserModel extends Model<IUserDocument> {
 
   findUserById: (userId: string) => Promise<IUserDocument>;
 
-  findByGoogleId: (googleId: string) => Promise<IUserDocument>;
+  findByGoogleId: (payload: object) => Promise<IUserDocument>;
 }
 
 const UserSchema = new mongoose.Schema<IUserDocument>(
@@ -89,7 +89,7 @@ UserSchema.statics.findUserById = async (userId: string) => {
   return user;
 };
 
-UserSchema.statics.findByGoogleId = async (googleId: string) => {
+UserSchema.statics.findByGoogleId = async ({ googleId }) => {
   const user = await User.findOne({ googleId });
   return user;
 };

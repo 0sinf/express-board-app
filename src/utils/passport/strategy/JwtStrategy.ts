@@ -16,7 +16,8 @@ const jwtVerify = async (
   done: VerifiedCallback
 ) => {
   if (!payload) return done(null, false, "로그인이 필요합니다.");
-  const user = await User.findByGoogleId(payload.googlId);
+  console.log(payload);
+  const user = await User.findByGoogleId(payload);
   done(null, user);
 };
 
