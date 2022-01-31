@@ -10,6 +10,7 @@ interface IUser {
   photos: {
     value: string;
   }[];
+  refreshToken: string;
 }
 
 export interface IUserDocument extends Document {
@@ -19,6 +20,7 @@ export interface IUserDocument extends Document {
   lastName: string;
   profile: string;
   provider: "google";
+  refreshToken: string;
   _raw?: object;
   _json?: object;
 }
@@ -56,6 +58,9 @@ const UserSchema = new mongoose.Schema<IUserDocument>(
       type: String,
       required: true,
     },
+    refreshToken: {
+      type: String,
+    },
   },
   {
     versionKey: false,
@@ -75,6 +80,7 @@ UserSchema.statics.findOrCreate = async (decoded, user) => {
     firstName: user.name.givenName,
     lastName: user.name.familyName,
     profile: user.photos[0].value,
+    refreshToken: user.refreshToken,
   });
 };
 
