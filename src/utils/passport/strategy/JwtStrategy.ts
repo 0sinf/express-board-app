@@ -20,4 +20,4 @@ const jwtVerify = async (
   done(null, user);
 };
 
-export const JwtStrategy = new Strategy(jwtOpt, jwtVerify);
+export default new Strategy(jwtOpt, jwtVerify);
