@@ -1,7 +1,7 @@
 import { Jwt, JwtPayload } from "jsonwebtoken";
 import mongoose, { Model, Document } from "mongoose";
 
-interface IUser {
+export interface IUser {
   displayName: string;
   name: {
     familyName: string;
@@ -19,6 +19,7 @@ export interface IUserDocument extends Document {
   lastName: string;
   profile: string;
   provider: "google";
+  refreshToken: string;
   _raw?: object;
   _json?: object;
 }
@@ -52,6 +53,9 @@ const UserSchema = new mongoose.Schema<IUserDocument>(
     profile: {
       type: String,
       required: true,
+    },
+    refreshToken: {
+      type: String,
     },
   },
   {
