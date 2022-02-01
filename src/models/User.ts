@@ -37,6 +37,8 @@ export interface IUserModel extends Model<IUserDocument> {
     user: IUserDocument,
     refreshToken: string
   ) => Promise<void>;
+
+  findOneByGoogleId: ({ googleId: string }) => Promise<IUserDocument>;
 }
 
 const UserSchema = new mongoose.Schema<IUserDocument>(
@@ -96,6 +98,11 @@ UserSchema.statics.findByGoogleIdAndUpdateToken = async (
   refreshToken
 ) => {
   await User.findOneAndUpdate({ googleId: user.googleId }, { refreshToken });
+};
+
+UserSchema.statics.findOneByGoogleId = async ({ googleId }) => {
+  const user = await User.findOne({ googleId });
+  return user;
 };
 
 const User = mongoose.model<IUserDocument, IUserModel>("User", UserSchema);

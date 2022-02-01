@@ -7,6 +7,7 @@ import {
   updatePost,
   deletePost,
 } from "../../services/post";
+import { loginRequired } from "../../utils/passport/guards/jwt-guard";
 import asyncHandler from "../middlewares/async-handler";
 import checkPermission from "../middlewares/check-permission";
 
@@ -15,6 +16,7 @@ export default (app: Router) => {
 
   route.post(
     "/",
+    loginRequired,
     body("title")
       .isString()
       .isLength({ max: 50 })

@@ -1,7 +1,9 @@
 import passport from "passport";
-import google from "./strategy/GoogleStrategy";
+import GoogleStrategy from "./strategy/GoogleStrategy";
+import { JwtStrategy } from "./strategy/JwtStrategy";
 
 export default () => {
-  passport.use(google);
+  passport.use("google", GoogleStrategy);
+  passport.use("jwt", JwtStrategy);
   passport.initialize();
 };
