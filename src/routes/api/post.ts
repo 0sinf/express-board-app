@@ -59,6 +59,7 @@ export default (app: Router) => {
 
   route.put(
     "/:postId",
+    loginRequired,
     checkPermission,
     body("title")
       .isString()
@@ -78,6 +79,7 @@ export default (app: Router) => {
 
   route.delete(
     "/:postId",
+    loginRequired,
     checkPermission,
     asyncHandler(async (req, res) => {
       const { postId } = req.params;

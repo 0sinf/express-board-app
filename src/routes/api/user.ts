@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { findUserById } from "../../services/user";
 import asyncHandler from "../middlewares/async-handler";
+import { loginRequired } from "../../utils/passport/guards/jwt-guard";
 
 export default (app: Router) => {
   const route = Router();
 
   route.get(
     "/",
+    loginRequired,
     asyncHandler(async (req, res) => {
       const id = req.user.id;
       const user = await findUserById(id);
