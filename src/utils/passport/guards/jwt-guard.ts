@@ -17,6 +17,9 @@ export const isLoginedRequired = async (
     return next("로그인이 필요합니다.");
   }
 
+  // 문제점!
+  // decode는 시크릿 키를 검증하지 않는다. 그저 페이로드를 디코딩할 뿐,
+
   // 액세스 토큰 검증
   const { googleId, iat, exp } = Object(decode(token));
   const user = await User.findByGoogleId({ googleId });
@@ -36,7 +39,10 @@ export const isLoginedRequired = async (
     const newAccessToken = sign({ googleId }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.cookie("accessToken", newAccessToken);
+    res.cookie("accessToken", newAccessToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
   }
 
   req.user = user;

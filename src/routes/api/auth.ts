@@ -21,7 +21,10 @@ export default (app: Router) => {
         process.env.JWT_SECRET,
         { expiresIn: "1h" }
       );
-      res.cookie("accessToken", accessToken);
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      });
       res.status(200).json({ isOk: true });
     })
   );
