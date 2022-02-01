@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { body, validationResult } from "express-validator";
-import { isLoginedRequired } from "../../utils/passport/guards/jwt-guard";
+import {
+  isLoginedRequired,
+  isLoginedUser,
+} from "../../utils/passport/guards/jwt-guard";
 import {
   createPost,
   findPostById,
@@ -42,6 +45,7 @@ export default (app: Router) => {
 
   route.get(
     "/:postId",
+    isLoginedUser,
     asyncHandler(async (req, res) => {
       const { postId } = req.params;
       const post = await findPostById(postId);
@@ -51,6 +55,7 @@ export default (app: Router) => {
 
   route.get(
     "/",
+    isLoginedUser,
     asyncHandler(async (req, res) => {
       const posts = await findAllPosts();
       res.status(200).json({ posts });

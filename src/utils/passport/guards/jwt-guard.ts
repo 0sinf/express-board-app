@@ -42,3 +42,15 @@ export const isLoginedRequired = async (
   req.user = user;
   return next();
 };
+
+export const isLoginedUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+  const { googleId } = Object(decode(token));
+  const user = await User.findByGoogleId({ googleId });
+  req.user = user;
+  return next();
+};
