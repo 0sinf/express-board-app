@@ -2,6 +2,7 @@ import { Jwt, JwtPayload } from "jsonwebtoken";
 import mongoose, { Model, Document } from "mongoose";
 
 export interface IUser {
+  id: string;
   displayName: string;
   name: {
     familyName: string;

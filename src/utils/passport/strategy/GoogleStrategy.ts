@@ -20,7 +20,7 @@ export default new GooogleStrategy(
     if (provider !== "google") {
       done("Incorrect access");
     }
-    const user = await User.findOrCreate(id, { displayName, name, photos });
+    const user = await User.findOrCreate(id, { id, displayName, name, photos });
     done(null, user);
   }
 );
