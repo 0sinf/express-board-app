@@ -25,12 +25,18 @@ export interface IUserDocument extends Document {
   _json?: object;
 }
 
-interface IUserModel extends Model<IUserDocument> {
+export interface IUserModel extends Model<IUserDocument> {
   findOrCreate: (
     googleId: string | Jwt | JwtPayload,
     user?: IUser
   ) => Promise<IUserDocument>;
+
   findUserById: (userId: string) => Promise<IUserDocument>;
+
+  findByGoogleIdAndUpdateToken: (
+    user: IUserDocument,
+    refreshToken: string
+  ) => Promise<void>;
 }
 
 const UserSchema = new mongoose.Schema<IUserDocument>(
@@ -83,6 +89,13 @@ UserSchema.statics.findOrCreate = async (decoded, user) => {
 UserSchema.statics.findUserById = async (userId: string) => {
   const user = await User.findById(userId);
   return user;
+};
+
+UserSchema.statics.findByGoogleIdAndUpdateToken = async (
+  user: IUserDocument,
+  refreshToken
+) => {
+  await User.findOneAndUpdate({ googleId: user.googleId }, { refreshToken });
 };
 
 const User = mongoose.model<IUserDocument, IUserModel>("User", UserSchema);
