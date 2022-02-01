@@ -13,9 +13,11 @@ describe("포스트 테스트", () => {
   let token = "Bearer ";
   let notOnwerToken = "Bearer ";
   let expiredToken = "Bearer ";
+  let expiredToken2 = "Bearer ";
 
   beforeAll(async () => {
     const refreshToken = sign({}, secretKey, { expiresIn: "14d" });
+    const expiredRefreshToken = sign({}, secretKey, { expiresIn: "0" });
 
     // 가짜 유저 생성
     await mongoose
@@ -42,6 +44,18 @@ describe("포스트 테스트", () => {
         refreshToken,
       });
 
+    await mongoose
+      .createConnection(process.env.MONGO_URI + "/boardTest")
+      .collection("users")
+      .insertOne({
+        googleId: "101010101200202",
+        nickname: "expired token",
+        firstName: "dummy",
+        lastName: "dummy",
+        profile: "lksjadlkfjkslkjdf",
+        refreshToken: expiredRefreshToken,
+      });
+
     const signOpt: SignOptions = {
       expiresIn: "1h",
     };
@@ -50,6 +64,10 @@ describe("포스트 테스트", () => {
     notOnwerToken += sign({ googleId: "543215432154321" }, secretKey, signOpt);
 
     expiredToken += sign({ googleId: "123451234512345" }, secretKey, {
+      expiresIn: "0",
+    });
+
+    expiredToken2 += sign({ googleId: "101010101200202" }, secretKey, {
       expiresIn: "0",
     });
   });
@@ -71,7 +89,7 @@ describe("포스트 테스트", () => {
     postId = res.body.postId;
   });
 
-  it("Fail 만료된 토큰으로 포스트 생성 테스트", async () => {
+  it("만료된 액세스 토큰으로 포스트 생성 테스트", async () => {
     const res = await request(server)
       .post("/api/posts")
       .set("authorization", expiredToken)
@@ -80,6 +98,19 @@ describe("포스트 테스트", () => {
         contents: "contents",
       });
 
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.isOk).toEqual(true);
+  });
+
+  it("Fail 만료된 액세스 토큰, 리프레시토큰으로 포스트 생성 테스트", async () => {
+    const res = await request(server)
+      .post("/api/posts")
+      .set("authorization", expiredToken2)
+      .send({
+        title: "title",
+        contents: "contents",
+      });
+    console.log(res.body);
     expect(res.statusCode).toEqual(403);
     expect(res.body.isOk).toEqual(false);
   });

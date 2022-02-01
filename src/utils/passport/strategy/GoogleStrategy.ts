@@ -22,11 +22,6 @@ export default new GooogleStrategy(
       done("Incorrect access");
     }
 
-    // access token, refresh token 생성
-    // 유저 정보 저장
-    // 토큰 생성하고 어떻게 전달할까ㅏㅏㅏㅏ
-    // 여기선 리프레시 토큰 생성하고 디비에 저장하고, 유저 값 전달?
-    // 그리고 라우터에서 받아서 액세스 토큰 생성하고 전달?
     const refreshToken = jwt.sign({}, process.env.JWT_SECRET, {
       expiresIn: "14d",
     });

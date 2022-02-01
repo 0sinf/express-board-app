@@ -35,8 +35,6 @@ describe("유저 정보 가져오기 테스트", () => {
       .set("authorization", token)
       .send();
 
-    console.log(res.body);
-
     expect(res.status).toEqual(200);
     expect(Object.keys(res.body)).toEqual(
       expect.arrayContaining([
