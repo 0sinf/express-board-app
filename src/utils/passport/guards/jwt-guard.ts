@@ -37,18 +37,6 @@ export const isLoginedRequired = async (
       expiresIn: "1h",
     });
     res.cookie("accessToken", newAccessToken);
-  } else {
-    // 액세스 토큰 유효, 리프레시 토큰 만료시 리프레시 토큰 유효 연장
-    if (refreshIat >= refreshExp) {
-      await User.updateOne(
-        { googleId },
-        {
-          refreshToken: sign({ googleId }, process.env.JWT_SECRET, {
-            expiresIn: "14d",
-          }),
-        }
-      );
-    }
   }
 
   req.user = user;

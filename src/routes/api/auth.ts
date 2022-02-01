@@ -22,7 +22,6 @@ export default (app: Router) => {
         { expiresIn: "1h" }
       );
       res.cookie("accessToken", accessToken);
-      res.cookie("refreshToken", user.refreshToken);
       res.status(200).json({ isOk: true });
     })
   );
