@@ -7,7 +7,6 @@ import {
   updatePost,
   deletePost,
 } from "../../services/post";
-import loginRequried from "../middlewares/login-requried";
 import asyncHandler from "../middlewares/async-handler";
 import checkPermission from "../middlewares/check-permission";
 
@@ -16,7 +15,6 @@ export default (app: Router) => {
 
   route.post(
     "/",
-    loginRequried,
     body("title")
       .isString()
       .isLength({ max: 50 })
@@ -59,7 +57,6 @@ export default (app: Router) => {
 
   route.put(
     "/:postId",
-    loginRequried,
     checkPermission,
     body("title")
       .isString()
@@ -79,7 +76,6 @@ export default (app: Router) => {
 
   route.delete(
     "/:postId",
-    loginRequried,
     checkPermission,
     asyncHandler(async (req, res) => {
       const { postId } = req.params;
