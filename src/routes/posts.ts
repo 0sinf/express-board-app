@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { findAll } from "../models/Post";
+import { create, findAll } from "../models/Post";
 
 const route = Router();
 
@@ -13,7 +13,11 @@ route.get("/", async (req, res) => {
 route.get("/:id", (req, res) => {});
 
 // 글 생성
-route.post("/", (req, res) => {});
+route.post("/", async (req, res) => {
+  const { title, contents } = req.body;
+  const post = await create(title, contents);
+  res.status(201).json({ isOk: true, post });
+});
 
 // 글 수정
 route.put("/:id", (req, res) => {});

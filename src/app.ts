@@ -3,6 +3,8 @@ import { port } from "./config";
 import postRouter from "./routes/posts";
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use("/posts", postRouter);
 
