@@ -37,6 +37,18 @@ describe("Post 테스트", () => {
     expect(res.body.post.contents).toEqual("contentssss");
   });
 
+  it("포스트 수정 테스트", async () => {
+    const res = await request(server).put(`/posts/${postId}`).send({
+      title: "update title",
+      contents: "update contents",
+    });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.post.id).toEqual(postId);
+    expect(res.body.post.title).toEqual("update title");
+    expect(res.body.post.contents).toEqual("update contents");
+  });
+
   afterAll(async () => {
     await pool.query("DELETE FROM posts");
   });

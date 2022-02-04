@@ -19,3 +19,11 @@ export const findOne = async (postId: string) => {
   ]);
   return result.rows[0];
 };
+
+export const updateOne = async (postId: string, { title, contents }) => {
+  const result = await pool.query(
+    "UPDATE posts SET title=$2, contents=$3 WHERE id=$1 RETURNING *",
+    [postId, title, contents]
+  );
+  return result.rows[0];
+};

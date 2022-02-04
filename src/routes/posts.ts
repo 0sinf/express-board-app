@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, findAll, findOne } from "../models/Post";
+import { create, findAll, findOne, updateOne } from "../models/Post";
 
 const route = Router();
 
@@ -24,7 +24,12 @@ route.post("/", async (req, res) => {
 });
 
 // 글 수정
-route.put("/:id", (req, res) => {});
+route.put("/:id", async (req, res) => {
+  const postId = String(req.params.id);
+  const { title, contents } = req.body;
+  const post = await updateOne(postId, { title, contents });
+  res.status(200).json({ isOk: true, post });
+});
 
 // 글 삭제
 route.delete("/:id", (req, res) => {});
