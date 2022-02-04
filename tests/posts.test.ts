@@ -1,6 +1,7 @@
 import request from "supertest";
 import "regenerator-runtime";
 import server from "../src/app";
+import { pool } from "../src/models/pool";
 
 describe("Post 테스트", () => {
   it("모든 포스트 조회 테스트", async () => {
@@ -19,5 +20,11 @@ describe("Post 테스트", () => {
     });
 
     expect(res.statusCode).toEqual(201);
+    expect(res.body.post.title).toEqual("titleee");
+    expect(res.body.post.contents).toEqual("contentssss");
+  });
+
+  afterAll(async () => {
+    await pool.query("DELETE FROM posts");
   });
 });

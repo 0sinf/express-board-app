@@ -7,8 +7,8 @@ export const findAll = async () => {
 
 export const create = async (title: string, contents: string) => {
   const result = await pool.query(
-    "INSERT INTO posts(title, contents) VALUES ($1, $2)",
+    "INSERT INTO posts(title, contents) VALUES ($1, $2) RETURNING *",
     [title, contents]
   );
-  return result;
+  return result.rows[0];
 };
