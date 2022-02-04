@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, findAll, findOne, updateOne } from "../models/Post";
+import { create, findAll, findOne, updateOne, deleteOne } from "../models/Post";
 
 const route = Router();
 
@@ -32,6 +32,10 @@ route.put("/:id", async (req, res) => {
 });
 
 // 글 삭제
-route.delete("/:id", (req, res) => {});
+route.delete("/:id", async (req, res) => {
+  const postId = String(req.params.id);
+  const deletedPostId = await deleteOne(postId);
+  res.status(200).json({ isOk: true, postId: deletedPostId });
+});
 
 export default route;

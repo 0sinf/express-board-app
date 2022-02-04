@@ -27,3 +27,10 @@ export const updateOne = async (postId: string, { title, contents }) => {
   );
   return result.rows[0];
 };
+
+export const deleteOne = async (postId: string) => {
+  const result = await pool.query("DELETE FROM posts WHERE id=$1 RETURNING *", [
+    postId,
+  ]);
+  return result.rows[0].id;
+};

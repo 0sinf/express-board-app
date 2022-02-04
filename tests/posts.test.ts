@@ -49,6 +49,14 @@ describe("Post 테스트", () => {
     expect(res.body.post.contents).toEqual("update contents");
   });
 
+  it("포스트 삭제 테스트", async () => {
+    const res = await request(server).delete(`/posts/${postId}`).send();
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.isOk).toEqual(true);
+    expect(res.body.postId).toEqual(postId);
+  });
+
   afterAll(async () => {
     await pool.query("DELETE FROM posts");
   });
