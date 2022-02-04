@@ -6,6 +6,10 @@ const app = express();
 
 app.use("/posts", postRouter);
 
-app.listen(port, () => {
-  console.log("Start App");
-});
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log("Start App");
+  });
+}
+
+export default app;

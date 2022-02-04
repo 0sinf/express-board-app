@@ -1,9 +1,13 @@
 import { Router } from "express";
+import { findAll } from "../models/Post";
 
 const route = Router();
 
 // 모든 글 조회
-route.get("/", (req, res) => {});
+route.get("/", async (req, res) => {
+  const posts = await findAll();
+  res.status(200).json({ isOk: true, posts });
+});
 
 // 글 상세 조회
 route.get("/:id", (req, res) => {});
