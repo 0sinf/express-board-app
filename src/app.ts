@@ -1,20 +1,10 @@
 import express from "express";
-import { Client } from "pg";
-import { port, pgUser, pgHost, pgDatabase, pgPassword, pgPort } from "./config";
+import { port } from "./config";
+import postRouter from "./routes/posts";
 
 const app = express();
 
-const client = new Client({
-  user: pgUser,
-  host: pgHost,
-  database: pgDatabase,
-  password: pgPassword,
-  port: pgPort,
-});
-
-client.connect().then(() => {
-  console.log("DB connected");
-});
+app.use("/posts", postRouter);
 
 app.listen(port, () => {
   console.log("Start App");
