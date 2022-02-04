@@ -12,3 +12,10 @@ export const create = async (title: string, contents: string) => {
   );
   return result.rows[0];
 };
+
+export const findOne = async (postId: string) => {
+  const result = await pool.query("SELECT * FROM posts WHERE id = $1", [
+    postId,
+  ]);
+  return result.rows[0];
+};

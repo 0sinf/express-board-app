@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, findAll } from "../models/Post";
+import { create, findAll, findOne } from "../models/Post";
 
 const route = Router();
 
@@ -10,7 +10,11 @@ route.get("/", async (req, res) => {
 });
 
 // 글 상세 조회
-route.get("/:id", (req, res) => {});
+route.get("/:id", async (req, res) => {
+  const postId = String(req.params.id);
+  const post = await findOne(postId);
+  res.status(200).json({ isOk: true, post });
+});
 
 // 글 생성
 route.post("/", async (req, res) => {
