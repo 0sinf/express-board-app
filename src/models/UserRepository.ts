@@ -20,4 +20,10 @@ export class UserRepository {
     const result = await db.query(query, [email, passhash, username, nickname]);
     return result.rows[0];
   }
+
+  async findById(userId: string): Promise<Partial<IUser>> {
+    const query = "SELECT email, username, nickname FROM users where u_id=$1";
+    const user = await db.query(query, [userId]);
+    return user.rows[0];
+  }
 }

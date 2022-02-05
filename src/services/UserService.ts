@@ -12,4 +12,9 @@ export class UserService {
     const user = await this.userRepository.save(userDto);
     return user.u_id;
   }
+
+  async getUserInfo(userId: string) {
+    const user = await this.userRepository.findById(userId);
+    return user;
+  }
 }
