@@ -9,3 +9,5 @@ export const pgUser = process.env.PGUSER;
 export const pgDatabase = process.env.PGDATABASE;
 export const pgPassword = process.env.PGPASSWORD;
 export const pgPort = Number(process.env.PGPORT);
+
+export const bcryptSalt = Number(process.env.BCSALT);
