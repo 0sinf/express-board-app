@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { create, findAll, findOne, updateOne, deleteOne } from "../models/Post";
+import commentRouter from "./comments";
 
 const route = Router();
+
+// 댓글
+route.use("/:postId/comments", commentRouter);
 
 // 모든 글 조회
 route.get("/", async (req, res) => {
