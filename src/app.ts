@@ -1,17 +1,18 @@
 import express from "express";
-import { port } from "./config";
-import { userRouter } from "./routes";
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+export default function (database) {
+  let app = express();
 
-app.use("/users", userRouter);
-
-if (process.env.NODE_ENV !== "test") {
-  app.listen(port, () => {
-    console.log("Start App");
+  app.use(express.json());
+  app.post("/users", async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      res.send(400);
+      return;
+    }
+    database.createUser(username, password);
+    res.send({ userId: 0 });
   });
-}
 
-export default app;
+  return app;
+}
