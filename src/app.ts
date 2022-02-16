@@ -10,8 +10,8 @@ export default function (database) {
       res.send(400);
       return;
     }
-    database.createUser(username, password);
-    res.send({ userId: 0 });
+    const userId = database.createUser(username, password);
+    res.send({ userId });
   });
 
   return app;
