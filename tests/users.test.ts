@@ -32,5 +32,16 @@ describe("POST /users", () => {
         expect(createUser.mock.calls[0][1]).toBe(body.password);
       }
     });
+
+    test("should contain the userId from the database in the json body", async () => {
+      createUser.mockResolvedValueOnce(1);
+
+      const response = await request(app).post("/users").send({
+        username: "username",
+        password: "password",
+      });
+
+      expect(response.body.userId).toBe(1);
+    });
   });
 });
